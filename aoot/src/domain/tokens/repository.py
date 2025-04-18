@@ -10,3 +10,6 @@ class TokenRepository(Protocol):
 
     @abstractmethod
     async def get_all_not_buyed_tokens(self) -> tuple[Token, ...]: ...
+
+    @abstractmethod
+    async def add(self, token: Token) -> None: ...
