@@ -12,14 +12,14 @@ class Token(BaseEntity):
 
     _is_buyed: bool = False
 
-    @classmethod
-    @override
-    def make(cls, ticker: str) -> "Token":
-        return cls(id=cast(int, None), ticker=ticker)
-
     @property
     def is_buyed(self) -> bool:
         return self._is_buyed
 
     def buy(self) -> None:
         self._is_buyed = True
+
+    @classmethod
+    @override
+    def make(cls, ticker: str) -> "Token":
+        return cls(id=cast(int, None), ticker=ticker)
