@@ -2,7 +2,7 @@ from typing import override
 
 from domain.tokens import TokenRepository, Token
 
-from application.ports.transaction_manager import TransactionManager
+from application.ports import TransactionManager
 from application.base import Interactor
 
 
