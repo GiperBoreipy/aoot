@@ -47,3 +47,17 @@ class Config:
 
 
 config: Final[Config] = Config.get()
+
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class Account:
+    api_key: str
+    secret_key: str
+    passphrase: str
+    use_balance_percent: float
+
+    @classmethod
+    def get(cls) -> tuple["Account", ...]: ...
+
+
+accounts: Final[tuple[Account, ...]] = Account.get()
