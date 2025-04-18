@@ -1,10 +1,9 @@
-from typing import override
 import logging
 
 from colorlog import ColoredFormatter
 
 
-def setup_logger(is_test: bool = False):
+def setup_logger(*, is_test: bool = False):
     file_out = logging.FileHandler(
         "prod.log" if not is_test else "test.log", encoding="utf-8"
     )
