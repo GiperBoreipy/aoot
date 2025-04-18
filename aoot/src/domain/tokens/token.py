@@ -16,7 +16,7 @@ class Token(BaseEntity):
     def is_buyed(self) -> bool:
         return self._is_buyed
 
-    def buy(self) -> None:
+    def mark_as_buyed(self) -> None:
         self._is_buyed = True
 
     @classmethod

@@ -4,7 +4,7 @@ from sqlalchemy import select
 
 from domain.tokens import TokenRepository, Token
 
-from infra.repositories.sqlalchemy.base import SQLAlchemyBaseRepository
+from infra.adapters.repositories.sqlalchemy.base import SQLAlchemyBaseRepository
 
 
 class SQLAlchemyTokenRepositoryImpl(SQLAlchemyBaseRepository, TokenRepository):

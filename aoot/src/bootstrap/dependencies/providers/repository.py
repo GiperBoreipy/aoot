@@ -2,7 +2,7 @@ from dishka import Provider, Scope, provide
 
 from domain.tokens import TokenRepository
 
-from infra.repositories.sqlalchemy import *
+from infra.adapters.repositories.sqlalchemy import *
 
 
 class SQLAlchemyRepositoryProvider(Provider):

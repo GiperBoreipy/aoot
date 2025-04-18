@@ -9,7 +9,7 @@ from sqlalchemy.ext.asyncio import (
     create_async_engine,
 )
 
-from domain.ports.transaction_manager import TransactionManager
+from application.ports.transaction_manager import TransactionManager
 
 from bootstrap.dependencies.providers import Config
 

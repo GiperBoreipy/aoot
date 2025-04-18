@@ -3,7 +3,8 @@ from typing import override
 from application.base import Interactor
 
 from domain.tokens import TokenRepository, Token
-from domain.ports.transaction_manager import TransactionManager
+
+from application.ports.transaction_manager import TransactionManager
 
 
 class AddToken(Interactor[str, None]):
