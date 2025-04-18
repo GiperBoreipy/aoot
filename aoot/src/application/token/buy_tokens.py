@@ -1,12 +1,16 @@
 from typing import override
 
-from domain.tokens import TokenRepository, Token
+from domain.tokens import TokenRepository
 
 from application.ports.transaction_manager import TransactionManager
 from application.base import Interactor
 
 
-class AddToken(Interactor[str, None]):
+class BuyTokens(Interactor[None, None]):
+    """
+    Попытатсья купить все некупленные токены
+    """
+
     @override
     def __init__(
         self, token_repo: TokenRepository, transaction_manager: TransactionManager
@@ -15,11 +19,8 @@ class AddToken(Interactor[str, None]):
         self.__transaction_manager = transaction_manager
 
     @override
-    async def __call__(self, request: str) -> None:
-        """request - ticker"""
+    async def __call__(self, _: None) -> None:
+        tokens = await self.__token_repo.get_all_not_buyed_tokens()
 
-        token = Token.new(ticker=request)
-
-        await self.__token_repo.add(token)
-
-        await self.__transaction_manager.commit()
+        for token in tokens:
+            ...
