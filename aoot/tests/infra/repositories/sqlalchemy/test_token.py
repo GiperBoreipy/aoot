@@ -2,6 +2,8 @@ import pytest
 
 from dishka import AsyncContainer
 
+from domain.ports.transaction_manager import TransactionManager
+
 from infra.repositories.sqlalchemy import SQLAlchemyTokenRepositoryImpl
 
 
@@ -11,5 +13,10 @@ async def test_sqlalchemy_token_repo(di_container: AsyncContainer) -> None:
         token_repo: SQLAlchemyTokenRepositoryImpl = await r_container.get(
             SQLAlchemyTokenRepositoryImpl
         )
+        transaction_manager: TransactionManager = await r_container.get(
+            TransactionManager
+        )
+
+        print(transaction_manager)
 
         print(token_repo)
