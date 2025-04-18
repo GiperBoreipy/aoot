@@ -11,8 +11,16 @@ mypy = "^1.15.0"
 sqlalchemy = "^2.0.40"
 dishka = "^1.5.3"
 python-dotenv = "^1.1.0"
+pytest = "^8.3.5"
+colorlog = "^6.9.0"
 
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src/"]
+addopts = "-s"
