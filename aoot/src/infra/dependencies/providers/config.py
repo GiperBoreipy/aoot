@@ -14,6 +14,10 @@ class Config:
     db_port: str
     db_name: str
 
+    @property
+    def db_url(self) -> str:
+        return f""
+
 
 class ConfigProvider(Provider):
     scope = Scope.APP
