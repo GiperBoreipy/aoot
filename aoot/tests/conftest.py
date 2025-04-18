@@ -4,7 +4,7 @@ from dishka import AsyncContainer
 
 from infra.dependencies import get_di_container
 
-from common.logger import setup_logger
+from bootstrap.logger import setup_logger
 
 
 setup_logger(is_test=True)
