@@ -15,6 +15,7 @@ pytest = "^8.3.5"
 colorlog = "^6.9.0"
 pytest-asyncio = "^0.26.0"
 asyncpg = "^0.30.0"
+alembic = "^1.15.2"
 
 
 [build-system]

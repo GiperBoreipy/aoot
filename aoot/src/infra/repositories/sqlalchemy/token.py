@@ -5,24 +5,24 @@ from sqlalchemy import select
 from domain.tokens import TokenRepository, Token
 
 from infra.repositories.sqlalchemy.base import SQLAlchemyBaseRepository
-from infra.models import TOKENS_TABLE
 
 
 class SQLAlchemyTokenRepositoryImpl(SQLAlchemyBaseRepository, TokenRepository):
     @override
     async def get_by_ticker(self, ticker: str) -> Token | None:
-        stmt = select(TOKENS_TABLE).where(TOKENS_TABLE.c.ticker == ticker)
+        stmt = select(Token).where(Token.ticker == ticker)  # type: ignore
 
-        result = await self._session.execute(stmt)
-        row = result.fetchone()
+        result = await self._session.scalar(stmt)
 
-        if row is None:
-            return None
-
-        print(row, type(row))
+        return result
 
     @override
-    async def get_all_not_buyed_tokens(self) -> tuple[Token, ...]: ...
+    async def get_all_not_buyed_tokens(self) -> tuple[Token, ...]:
+        stmt = select(Token).where(Token.is_buyed == False)  # type: ignore
+
+        results = await self._session.scalars(stmt)
+
+        return tuple(results)
 
     @override
     async def add(self, token: Token) -> None:

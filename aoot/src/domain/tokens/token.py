@@ -4,7 +4,7 @@ from typing import cast, override
 from domain.shared import BaseEntity
 
 
-@dataclass(kw_only=True, slots=True)
+@dataclass(kw_only=True)
 class Token(BaseEntity):
     id: int
 
@@ -21,5 +21,5 @@ class Token(BaseEntity):
 
     @classmethod
     @override
-    def make(cls, ticker: str) -> "Token":
+    def new(cls, ticker: str) -> "Token":
         return cls(id=cast(int, None), ticker=ticker)
