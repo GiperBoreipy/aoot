@@ -15,14 +15,26 @@ from bootstrap.configs import accounts, Account
 from infra.adapters.base import HttpClient
 
 
-class OkxCryptoExchangeServiceImpl(HttpClient, CryptoExchangeService):
-    BASE_API_URL: Final = "https://www.okx.com"
+class OkxCryptoExchangeServiceImpl(CryptoExchangeService):
+    BASE_API_URL: Final[str] = "https://www.okx.com"
+
+    def __init__(self, http_client: HttpClient) -> None:
+        self.__http_client = http_client
 
     @override
     async def buy_token(self, token: Token) -> bool: ...
 
     async def _get_balance(self, account: Account) -> Decimal:
         url = self.BASE_API_URL + "/api/v5/account/balance"
+
+        response = await self.__http_client.get(
+            headers=self._get_request_headers(
+                account, r_url=url, r_method="get", r_body={}
+            ),
+            url=url,
+        )
+
+        response_data = await response.json()
 
     def _get_request_headers(
         self, account: Account, *, r_url: str, r_method: str, r_body: dict[str, Any]
