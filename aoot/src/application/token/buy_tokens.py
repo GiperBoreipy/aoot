@@ -23,7 +23,7 @@ class BuyTokens(Interactor[None, None]):
         self.__transaction_manager = transaction_manager
 
     @override
-    async def __call__(self, _: None) -> None:
+    async def __call__(self) -> None:
         tokens = await self.__token_repo.get_all_not_buyed_tokens()
 
         for token in tokens:
