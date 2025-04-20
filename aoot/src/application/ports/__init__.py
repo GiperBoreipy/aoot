@@ -1,2 +1,3 @@
 from .crypto_exchange_service import CryptoExchangeService
 from .transaction_manager import TransactionManager
+from .tickers_info_service import TickersInfoService

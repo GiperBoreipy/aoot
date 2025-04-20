@@ -22,7 +22,9 @@ class OkxCryptoExchangeServiceImpl(CryptoExchangeService):
         self.__http_client = http_client
 
     @override
-    async def buy_token(self, token: Token) -> bool: ...
+    async def buy_token(self, token: Token) -> bool:
+        for accoun in accounts:
+            ...
 
     async def _get_balance(self, account: Account) -> Decimal:
         url = self.BASE_API_URL + "/api/v5/account/balance"

@@ -4,11 +4,14 @@ from typing import cast, override
 from domain.shared import BaseEntity
 
 
+type Ticker = str
+
+
 @dataclass(kw_only=True)
 class Token(BaseEntity):
     id: int
 
-    ticker: str
+    ticker: Ticker
 
     _is_buyed: bool = False
 
@@ -21,5 +24,5 @@ class Token(BaseEntity):
 
     @classmethod
     @override
-    def new(cls, ticker: str) -> "Token":
+    def new(cls, ticker: Ticker) -> "Token":
         return cls(id=cast(int, None), ticker=ticker)

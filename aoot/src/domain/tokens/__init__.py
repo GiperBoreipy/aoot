@@ -1,2 +1,2 @@
 from .repository import TokenRepository
-from .entity import Token
+from .entity import Token, Ticker
