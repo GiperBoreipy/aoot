@@ -18,7 +18,7 @@ class SQLAlchemyTokenRepositoryImpl(SQLAlchemyBaseRepository, TokenRepository):
 
     @override
     async def get_all_not_buyed_tokens(self) -> tuple[Token, ...]:
-        stmt = select(Token).where(Token.is_buyed == False)  # type: ignore
+        stmt = select(Token).where(not Token.is_buyed)  # type: ignore
 
         results = await self._session.scalars(stmt)
 
