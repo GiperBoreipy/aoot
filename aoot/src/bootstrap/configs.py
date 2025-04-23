@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import Final
 import os
+import json
 
 from dotenv import load_dotenv
 
@@ -57,7 +58,22 @@ class Account:
     use_balance_percent: float
 
     @classmethod
-    def get(cls) -> tuple["Account", ...]: ...
+    def get(cls) -> tuple["Account", ...]:
+        arr = []
+        with open("assets/account.json", "r") as file:
+            data = json.load(file)
+
+        for acc in data["accounts"]:
+            arr.append(
+                cls(
+                    api_key=acc["api_key"],
+                    secret_key=acc["secret_key"],
+                    passphrase=acc["passphrase"],
+                    use_balance_percent=acc["use_balance_percent"],
+                )
+            )
+
+        return tuple(arr)
 
 
 accounts: Final[tuple[Account, ...]] = Account.get()

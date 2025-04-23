@@ -1,5 +1,6 @@
 from decimal import Decimal
 from typing import override, Final, Any
+from pprint import pprint
 from datetime import datetime
 import base64
 import hashlib
@@ -8,7 +9,7 @@ import json
 
 from application.ports import CryptoExchangeService
 
-from domain.tokens import Token
+from domain.tokens import Token, Ticker
 
 from bootstrap.configs import accounts, Account
 
@@ -37,6 +38,24 @@ class OkxCryptoExchangeServiceImpl(CryptoExchangeService):
         )
 
         response_data = await response.json()
+
+    async def _is_token_exists(self, account: Account, *, ticker: Ticker) -> bool:
+        url = self.BASE_API_URL + "/api/v5/public/instruments" + "?instType=SPOT"
+
+        response = await self.__http_client.get(
+            url=url,
+            headers=self._get_request_headers(
+                account, r_url=url, r_method="get", r_body={}
+            ),
+        )
+
+        response_data = await response.json()
+
+        for token in response_data.get("data", []):
+            if token["instId"].lower().startswith(ticker.lower()):
+                return True
+
+        return False
 
     def _get_request_headers(
         self, account: Account, *, r_url: str, r_method: str, r_body: dict[str, Any]
