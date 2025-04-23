@@ -27,13 +27,37 @@ class OkxCryptoExchangeServiceImpl(CryptoExchangeService):
         if not await self._is_token_exists(ticker=token.ticker):
             return False
 
+        url = self.BASE_API_URL + "/api/v5/trade/order"
+
+        price = 1
+
         payload = {
             "instId": token.ticker.upper() + "-USDT",
-            "tdMode": "isolated",
-            "side": "long",
+            "tdMode": "spot_isolated",
+            "side": "buy",
+            "ordType": "market",
+            "px": "",
+            "posSide": "long",
             "reduceOnly": False,
             "sz": "",
+            "attachAlgoOrds": {
+                "tgOrdKing": "limit",
+                "tgOrdPx": str(price * 1.05),
+                "tdTriggerPxType": "last",
+            },
         }
+
+        response = await self.__http_client.post(
+            url=url,
+            headers=self._get_request_headers(
+                acc, r_url=url, r_method="post", r_body=payload
+            ),
+            json=payload,
+        )
+
+        response_data = await response.json()
+
+        ...
 
         return False
 
@@ -66,7 +90,7 @@ class OkxCryptoExchangeServiceImpl(CryptoExchangeService):
         response_data = await response.json()
 
         for token in response_data.get("data", []):
-            if token.get("baseCcy", "").lower() == ticker.lower():
+            if token.get("instId", "") == ticker.upper() + "":
                 pprint(token)
                 return True
 
