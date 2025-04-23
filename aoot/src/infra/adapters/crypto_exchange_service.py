@@ -1,5 +1,6 @@
 from decimal import Decimal
 from typing import override, Final, Any
+from pprint import pprint
 from datetime import datetime, timezone
 import base64
 import hashlib
@@ -10,7 +11,7 @@ from application.ports import CryptoExchangeService
 
 from domain.tokens import Token, Ticker
 
-from bootstrap.configs import account, Account
+from bootstrap.configs import Account
 
 from infra.adapters.base import HttpClient
 
@@ -65,7 +66,8 @@ class OkxCryptoExchangeServiceImpl(CryptoExchangeService):
         response_data = await response.json()
 
         for token in response_data.get("data", []):
-            if token.get("instId", "").lower().startswith(ticker.lower()):
+            if token.get("baseCcy", "").lower() == ticker.lower():
+                pprint(token)
                 return True
 
         return False
