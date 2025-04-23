@@ -1,7 +1,6 @@
 from decimal import Decimal
 from typing import override, Final, Any
-from pprint import pprint
-from datetime import datetime
+from datetime import datetime, timezone
 import base64
 import hashlib
 import hmac
@@ -11,7 +10,7 @@ from application.ports import CryptoExchangeService
 
 from domain.tokens import Token, Ticker
 
-from bootstrap.configs import accounts, Account
+from bootstrap.configs import account, Account
 
 from infra.adapters.base import HttpClient
 
@@ -23,60 +22,86 @@ class OkxCryptoExchangeServiceImpl(CryptoExchangeService):
         self.__http_client = http_client
 
     @override
-    async def buy_token(self, token: Token) -> bool:
-        for accoun in accounts:
-            ...
+    async def buy_token(self, acc: Account, token: Token) -> bool:
+        if not await self._is_token_exists(ticker=token.ticker):
+            return False
 
-    async def _get_balance(self, account: Account) -> Decimal:
-        url = self.BASE_API_URL + "/api/v5/account/balance"
+        payload = {
+            "instId": token.ticker.upper() + "-USDT",
+            "tdMode": "isolated",
+            "side": "long",
+            "reduceOnly": False,
+            "sz": "",
+        }
+
+        return False
+
+    async def _get_balance(self, acc: Account) -> Decimal:
+        """Получить баланс аккаунта в USDT"""
+
+        url = self.BASE_API_URL + "/api/v5/account/balance?ccy=USDT"
 
         response = await self.__http_client.get(
             headers=self._get_request_headers(
-                account, r_url=url, r_method="get", r_body={}
+                acc, r_url=url, r_method="get", r_body=""
             ),
             url=url,
         )
 
         response_data = await response.json()
 
-    async def _is_token_exists(self, account: Account, *, ticker: Ticker) -> bool:
+        if not (response_data["data"][0].get("details", [])):
+            return Decimal(0)
+
+        return Decimal(response_data["data"][0]["details"][0].get("eq", 0))
+
+    async def _is_token_exists(self, *, ticker: Ticker) -> bool:
+        """Проверить существует ли токен на бирже"""
+
         url = self.BASE_API_URL + "/api/v5/public/instruments" + "?instType=SPOT"
 
-        response = await self.__http_client.get(
-            url=url,
-            headers=self._get_request_headers(
-                account, r_url=url, r_method="get", r_body={}
-            ),
-        )
+        response = await self.__http_client.get(url=url)
 
         response_data = await response.json()
 
         for token in response_data.get("data", []):
-            if token["instId"].lower().startswith(ticker.lower()):
+            if token.get("instId", "").lower().startswith(ticker.lower()):
                 return True
 
         return False
 
     def _get_request_headers(
-        self, account: Account, *, r_url: str, r_method: str, r_body: dict[str, Any]
+        self,
+        acc: Account,
+        *,
+        r_url: str,
+        r_method: str,
+        r_body: dict[str, Any] | str,
     ) -> dict[str, str]:
         """Возвращает хедерсы для запроса"""
 
         timestamp = (
-            datetime.now().isoformat(timespec="milliseconds").replace("+00:00", "Z")
+            datetime.now(timezone.utc)
+            .isoformat(timespec="milliseconds")
+            .replace("+00:00", "Z")
         )
 
         return {
-            "OK-ACCESS-KEY": account.api_key,
+            "OK-ACCESS-KEY": acc.api_key,
             "OK-ACCESS-SIGN": base64.b64encode(
                 hmac.new(
-                    base64.b64decode(account.secret_key),
-                    (timestamp + r_method.upper() + r_url + json.dumps(r_body)).encode(
-                        "utf-8"
-                    ),
+                    acc.secret_key.encode("utf-8"),
+                    (
+                        timestamp
+                        + r_method.upper()
+                        + r_url.replace(self.BASE_API_URL, "")
+                        + (json.dumps(r_body) if isinstance(r_body, dict) else "")
+                    ).encode("utf-8"),
                     hashlib.sha256,
                 ).digest()
             ).decode("utf-8"),
             "OK-ACCESS-TIMESTAMP": timestamp,
-            "OK-ACCESS-PASSPHRASE": account.passphrase,
+            "OK-ACCESS-PASSPHRASE": acc.passphrase,
+            "Content-Type": "application/json",
+            "x-simulated-trading": "1",
         }

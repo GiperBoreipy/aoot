@@ -58,8 +58,8 @@ class Account:
     use_balance_percent: float
 
     @classmethod
-    def get(cls) -> tuple["Account", ...]:
-        arr = []
+    def get(cls) -> "Account":
+        arr: list["Account"] = []
         with open("assets/account.json", "r") as file:
             data = json.load(file)
 
@@ -73,7 +73,7 @@ class Account:
                 )
             )
 
-        return tuple(arr)
+        return arr[0]
 
 
-accounts: Final[tuple[Account, ...]] = Account.get()
+account: Final[Account] = Account.get()
