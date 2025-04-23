@@ -11,6 +11,8 @@ from .repository import (
     TestRepositoryProvider,
 )
 from .interactors import InteractorProvider
+from .adapters import AdapterProvider
+from .common import CommonProvider
 
 
 all_providers: Final[tuple[type[Provider], ...]] = (
@@ -19,6 +21,8 @@ all_providers: Final[tuple[type[Provider], ...]] = (
     SQLAlchemyRepositoryProvider,
     RepositoryProvider,
     InteractorProvider,
+    AdapterProvider,
+    CommonProvider,
 )
 
 all_test_providers: Final[tuple[type[Provider], ...]] = (
@@ -27,4 +31,6 @@ all_test_providers: Final[tuple[type[Provider], ...]] = (
     MemoryRepositoryProvider,
     TestRepositoryProvider,
     InteractorProvider,
+    AdapterProvider,
+    CommonProvider,
 )

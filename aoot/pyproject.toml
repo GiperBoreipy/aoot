@@ -18,6 +18,7 @@ pytest-asyncio = "^0.26.0"
 asyncpg = "^0.30.0"
 alembic = "^1.15.2"
 aiohttp = "^3.11.16"
+parsel = "^1.10.0"
 
 
 [build-system]
