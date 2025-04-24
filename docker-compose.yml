@@ -10,7 +10,7 @@ services:
       - ./aoot/log.log:/server/log.log
 
   postgres:
-    image: postgres:latest
+    image: postgres:16
     container_name: postgres 
     environment:
       POSTGRES_USER: default_postgres_user
@@ -26,6 +26,11 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
     restart: unless-stopped
 
   
