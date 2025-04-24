@@ -29,20 +29,21 @@ class OkxCryptoExchangeServiceImpl(CryptoExchangeService):
 
         url = self.BASE_API_URL + "/api/v5/trade/order"
 
-        price = 1
+        token_price = await self._get_token_price(token.ticker)
+        acc_balance = await self._get_balance(acc)
 
         payload = {
-            "instId": token.ticker.upper() + "-USDT",
+            "instId": token.ticker.instrument_id,
             "tdMode": "spot_isolated",
             "side": "buy",
             "ordType": "market",
-            "px": "",
+            "px": str(token_price),
             "posSide": "long",
             "reduceOnly": False,
-            "sz": "",
+            "sz": str(int(acc_balance * Decimal(acc.use_balance_percent))),
             "attachAlgoOrds": {
                 "tgOrdKing": "limit",
-                "tgOrdPx": str(price * 1.05),
+                "tgOrdPx": str(token_price * Decimal(1.05)),
                 "tdTriggerPxType": "last",
             },
         }
@@ -57,9 +58,31 @@ class OkxCryptoExchangeServiceImpl(CryptoExchangeService):
 
         response_data = await response.json()
 
-        ...
+        pprint(response_data)
 
         return False
+
+    async def _get_token_price(self, ticker: Ticker) -> Decimal:
+        """Получить цену токена"""
+
+        url = (
+            self.BASE_API_URL
+            + "/api/v5/public/mark-price"
+            + f"?instId={ticker.instrument_id}"
+        )
+
+        response = await self.__http_client.get(url=url)
+
+        if response.status != 200:
+            return Decimal(0)
+
+        response_data = await response.json()
+
+        for r in response_data["data"]:
+            if r["instId"].startswith(ticker.value):
+                return Decimal(r["markPx"])
+
+        return Decimal(0)
 
     async def _get_balance(self, acc: Account) -> Decimal:
         """Получить баланс аккаунта в USDT"""
@@ -72,6 +95,9 @@ class OkxCryptoExchangeServiceImpl(CryptoExchangeService):
             ),
             url=url,
         )
+
+        if response.status != 200:
+            return Decimal(0)
 
         response_data = await response.json()
 
@@ -87,10 +113,13 @@ class OkxCryptoExchangeServiceImpl(CryptoExchangeService):
 
         response = await self.__http_client.get(url=url)
 
+        if response.status != 200:
+            return False
+
         response_data = await response.json()
 
         for token in response_data.get("data", []):
-            if token.get("instId", "") == ticker.upper() + "":
+            if token.get("instId", "") == ticker.instrument_id:
                 pprint(token)
                 return True
 

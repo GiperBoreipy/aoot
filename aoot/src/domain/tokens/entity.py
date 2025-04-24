@@ -4,7 +4,14 @@ from typing import cast, override
 from domain.shared import BaseEntity
 
 
-type Ticker = str
+@dataclass(slots=True, frozen=True)
+class Ticker:
+
+    value: str
+
+    @property
+    def instrument_id(self) -> str:
+        return self.value + "-USDT"
 
 
 @dataclass(kw_only=True)
