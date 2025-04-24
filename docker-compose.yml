@@ -33,6 +33,16 @@ services:
           memory: 512M
     restart: unless-stopped
 
+  adminer:
+    image: adminer
+    container_name: adminer
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
   
 volumes:
   postgres_data:
