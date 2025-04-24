@@ -1,0 +1,27 @@
+services:
+  server:
+    build:
+      context: python_application/
+      dockerfile: Dockerfile
+    image: server 
+    container_name: server 
+    restart: unless-stopped
+    volumes:
+      - ./aoot/log.log:/server/log.log
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres 
+    environment:
+      POSTGRES_USER: default_postgres_user
+      POSTGRES_PASSWORD: default_postgres_password
+      POSTGRES_DB: default_postgres_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  
+volumes:
+  postgres_data:

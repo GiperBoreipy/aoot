@@ -5,5 +5,4 @@ __pycache__
 .env
 migrations/versions/*
 account.json
-
  
