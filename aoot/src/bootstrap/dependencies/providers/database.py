@@ -11,6 +11,8 @@ from sqlalchemy.ext.asyncio import (
 
 from application.ports.transaction_manager import TransactionManager
 
+from infra.adapters import DummyTransactionManagerImpl
+
 from bootstrap.dependencies.providers import Config
 
 
@@ -38,3 +40,11 @@ class DatabaseProvider(Provider):
     @provide(scope=Scope.APP)
     async def get_engine(self, config: Config) -> AsyncEngine:
         return create_async_engine(config.db_url, echo=False, pool_recycle=180)
+
+
+class DummyDatabaseProvider(Provider):
+    scope = Scope.REQUEST
+
+    @provide
+    def get_transaction_manager(self) -> TransactionManager:
+        return DummyTransactionManagerImpl()

@@ -7,7 +7,7 @@ from infra.adapters.repositories.memory import *
 
 
 class MemoryRepositoryProvider(Provider):
-    scoep = Scope.REQUEST
+    scope = Scope.REQUEST
 
     get_token_repo = provide(MemoryTokenRepositoryImpl)
 
@@ -24,7 +24,7 @@ class RepositoryProvider(Provider):
     get_token_repo = provide(SQLAlchemyTokenRepositoryImpl, provides=TokenRepository)
 
 
-class TestRepositoryProvider(Provider):
+class DummyRepositoryProvider(Provider):
     scope = Scope.REQUEST
 
     get_token_repo = provide(MemoryTokenRepositoryImpl, provides=TokenRepository)

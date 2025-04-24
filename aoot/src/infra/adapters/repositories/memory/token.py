@@ -19,4 +19,5 @@ class MemoryTokenRepositoryImpl(TokenRepository):
 
     @override
     async def add(self, token: Token) -> None:
+        token.id = len(self.__items) + 1
         self.__items.append(token)

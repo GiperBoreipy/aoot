@@ -2,23 +2,21 @@
 #
 # from dishka import AsyncContainer
 #
+# from domain.tokens import Token, Ticker
+#
 # from infra.adapters.repositories.sqlalchemy import SQLAlchemyTokenRepositoryImpl
 #
 # from application.ports import TransactionManager
 #
 #
 # @pytest.mark.asyncio
-# async def test_sqlalchemy_token_repo(di_container: AsyncContainer) -> None:
+# async def test_get_add_token(di_container: AsyncContainer) -> None:
 #     async with di_container() as r_container:
-#         token_repo: SQLAlchemyTokenRepositoryImpl = await r_container.get(
-#             SQLAlchemyTokenRepositoryImpl
-#         )
-#         tm: TransactionManager = await r_container.get(TransactionManager)
+#         token_repo = await r_container.get(SQLAlchemyTokenRepositoryImpl)
+#         tm = await r_container.get(TransactionManager)
 #
-#         token = await token_repo.get_by_ticker("хуй")
-#         print(token)
-#         if token is None:
-#             return
-#         token.mark_as_buyed()
+#         token = Token(ticker=Ticker("науй ты смотришь"))
+#         assert token.id == 0
+#         await token_repo.add(token)
 #         await tm.commit()
-#         print(await token_repo.get_by_ticker("хуй"))
+#         assert token.id != 0

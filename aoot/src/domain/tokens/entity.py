@@ -1,26 +1,15 @@
-from dataclasses import dataclass
-from typing import cast, override
+from dataclasses import dataclass, field
 
-from domain.shared import BaseEntity
-
-
-@dataclass(slots=True, frozen=True)
-class Ticker:
-
-    value: str
-
-    @property
-    def instrument_id(self) -> str:
-        return self.value + "-USDT"
+from .vo import Ticker
 
 
 @dataclass(kw_only=True)
-class Token(BaseEntity):
-    id: int
+class Token:
+    id: int = field(init=False, default=0)
 
     ticker: Ticker
 
-    _is_buyed: bool = False
+    _is_buyed: bool = field(init=False, default=False)
 
     @property
     def is_buyed(self) -> bool:
@@ -28,8 +17,3 @@ class Token(BaseEntity):
 
     def mark_as_buyed(self) -> None:
         self._is_buyed = True
-
-    @classmethod
-    @override
-    def new(cls, ticker: Ticker) -> "Token":
-        return cls(id=cast(int, None), ticker=ticker)

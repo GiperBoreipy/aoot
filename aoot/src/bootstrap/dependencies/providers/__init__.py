@@ -3,12 +3,12 @@ from typing import Final
 from dishka import Provider
 
 from .config import Config, ConfigProvider
-from .database import DatabaseProvider
+from .database import DatabaseProvider, DummyDatabaseProvider
 from .repository import (
     SQLAlchemyRepositoryProvider,
     RepositoryProvider,
     MemoryRepositoryProvider,
-    TestRepositoryProvider,
+    DummyRepositoryProvider,
 )
 from .interactors import InteractorProvider
 from .adapters import AdapterProvider
@@ -27,9 +27,9 @@ all_providers: Final[tuple[type[Provider], ...]] = (
 
 all_test_providers: Final[tuple[type[Provider], ...]] = (
     ConfigProvider,
-    DatabaseProvider,
+    DummyDatabaseProvider,
     MemoryRepositoryProvider,
-    TestRepositoryProvider,
+    DummyRepositoryProvider,
     InteractorProvider,
     AdapterProvider,
     CommonProvider,
