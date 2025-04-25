@@ -21,7 +21,7 @@ class AddTokens(Interactor[str, None]):
     @override
     async def __call__(self) -> None:
         for ticker in await self.__tickers_info_service.get_tickers():
-            token = Token.new(ticker=ticker)
+            token = Token(ticker=ticker)
 
             await self.__token_repo.add(token)
 
