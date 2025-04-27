@@ -1,20 +1,20 @@
 from typing import override, Final
 import asyncio
 
+from aiohttp import ClientSession
+
 from parsel import Selector
 
 from src.application.ports import TickersInfoService
 
 from src.domain.tokens import Ticker
 
-from .base import HttpClient
-
 
 class OkxTickersInfoServiceImpl(TickersInfoService):
     DOMAIN: Final[str] = "https://www.okx.com"
     BASE_URL: Final[str] = DOMAIN + "/ru/help/section/announcements-new-listings"
 
-    def __init__(self, client: HttpClient) -> None:
+    def __init__(self, client: ClientSession) -> None:
         self._client = client
 
     @override
@@ -22,10 +22,10 @@ class OkxTickersInfoServiceImpl(TickersInfoService):
         while True:
             try:
                 res = await self._get_tickers()
+                if res:
+                    break
             except Exception:
                 await asyncio.sleep(2)
-            break
-
         return tuple(set(res))
 
     async def _get_tickers(self) -> tuple[Ticker, ...]:
@@ -54,7 +54,7 @@ class OkxTickersInfoServiceImpl(TickersInfoService):
             ticker = selector.re_first(r"Тикер: ([A-Z]*)")
 
             if ticker:
-                tickers.append(ticker)
+                tickers.append(Ticker(ticker))
 
         return tuple(tickers)
 

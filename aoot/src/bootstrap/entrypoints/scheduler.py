@@ -11,13 +11,12 @@ from src.infra.tasks import tasks
 setup_logger()
 
 
-async_shared_broker.default_broker(InMemoryBroker())
+broker = InMemoryBroker()
+async_shared_broker.default_broker(broker)
 
 
-scheduler = TaskiqScheduler(
-    async_shared_broker, [LabelScheduleSource(async_shared_broker)]
-)
+scheduler = TaskiqScheduler(broker, [LabelScheduleSource(async_shared_broker)])
 
 
 container = get_di_container()
-setup_dishka(container, async_shared_broker)
+setup_dishka(container, broker)

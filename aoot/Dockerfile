@@ -13,4 +13,4 @@ RUN poetry install
 
 COPY . ./
 
-CMD ["poetry", "run", "taskiq", "scheduler", "src.bootstrap.entrypoints.scheduler:scheduler"]
+CMD ["poetry", "run", "taskiq", "scheduler", "src.bootstrap.entrypoints.scheduler:scheduler", "--log-level", "DEBUG"]

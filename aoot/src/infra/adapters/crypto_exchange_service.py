@@ -7,19 +7,19 @@ import hashlib
 import hmac
 import json
 
+from aiohttp import ClientSession
+
 from src.application.ports import CryptoExchangeService
 
 from src.domain.tokens import Token, Ticker
 
 from src.bootstrap.configs import Account
 
-from src.infra.adapters.base import HttpClient
-
 
 class OkxCryptoExchangeServiceImpl(CryptoExchangeService):
     BASE_API_URL: Final[str] = "https://www.okx.com"
 
-    def __init__(self, http_client: HttpClient) -> None:
+    def __init__(self, http_client: ClientSession) -> None:
         self.__http_client = http_client
 
     @override
@@ -58,7 +58,12 @@ class OkxCryptoExchangeServiceImpl(CryptoExchangeService):
 
         response_data = await response.json()
 
-        pprint(response_data)
+        if (
+            response.status == 200
+            and response_data["code"] == "0"
+            and response_data["msg"] == ""
+        ):
+            return True
 
         return False
 

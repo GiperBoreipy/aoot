@@ -1,9 +1,13 @@
 from typing import override
+import logging
 
 from src.domain.tokens import TokenRepository, Token
 
 from src.application.ports import TransactionManager, TickersInfoService
 from src.application.base import Interactor
+
+
+logger = logging.getLogger(__name__)
 
 
 class AddTokens(Interactor[str, None]):
