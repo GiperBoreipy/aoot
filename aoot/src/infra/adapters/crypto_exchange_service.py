@@ -7,13 +7,13 @@ import hashlib
 import hmac
 import json
 
-from application.ports import CryptoExchangeService
+from src.application.ports import CryptoExchangeService
 
-from domain.tokens import Token, Ticker
+from src.domain.tokens import Token, Ticker
 
-from bootstrap.configs import Account
+from src.bootstrap.configs import Account
 
-from infra.adapters.base import HttpClient
+from src.infra.adapters.base import HttpClient
 
 
 class OkxCryptoExchangeServiceImpl(CryptoExchangeService):

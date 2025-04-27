@@ -1,6 +1,6 @@
 from dishka import Provider, Scope, provide_all
 
-from application.token import BuyTokens, AddTokens
+from src.application.token import BuyTokens, AddTokens
 
 
 class InteractorProvider(Provider):

@@ -1,8 +1,8 @@
 from dishka import Provider, Scope, provide
 
-from application.ports import *
+from src.application.ports import *
 
-from infra.adapters import *
+from src.infra.adapters import *
 
 
 class AdapterProvider(Provider):

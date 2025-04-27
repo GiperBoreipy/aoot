@@ -9,11 +9,11 @@ from sqlalchemy.ext.asyncio import (
     create_async_engine,
 )
 
-from application.ports.transaction_manager import TransactionManager
+from src.application.ports.transaction_manager import TransactionManager
 
-from infra.adapters import DummyTransactionManagerImpl
+from src.infra.adapters import DummyTransactionManagerImpl
 
-from bootstrap.dependencies.providers import Config
+from src.bootstrap.configs import config
 
 
 class DatabaseProvider(Provider):
@@ -38,7 +38,7 @@ class DatabaseProvider(Provider):
         return async_sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)
 
     @provide(scope=Scope.APP)
-    async def get_engine(self, config: Config) -> AsyncEngine:
+    async def get_engine(self) -> AsyncEngine:
         return create_async_engine(config.db_url, echo=False, pool_recycle=180)
 
 

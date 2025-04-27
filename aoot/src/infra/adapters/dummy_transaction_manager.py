@@ -1,6 +1,6 @@
 from typing import override
 
-from application.ports import TransactionManager
+from src.application.ports import TransactionManager
 
 
 class DummyTransactionManagerImpl(TransactionManager):

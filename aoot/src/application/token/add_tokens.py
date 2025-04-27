@@ -1,9 +1,9 @@
 from typing import override
 
-from domain.tokens import TokenRepository, Token
+from src.domain.tokens import TokenRepository, Token
 
-from application.ports import TransactionManager, TickersInfoService
-from application.base import Interactor
+from src.application.ports import TransactionManager, TickersInfoService
+from src.application.base import Interactor
 
 
 class AddTokens(Interactor[str, None]):

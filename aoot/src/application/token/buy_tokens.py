@@ -1,9 +1,9 @@
 from typing import override
 
-from domain.tokens import TokenRepository
+from src.domain.tokens import TokenRepository
 
-from application.ports import TransactionManager, CryptoExchangeService
-from application.base import Interactor
+from src.application.ports import TransactionManager, CryptoExchangeService
+from src.application.base import Interactor
 
 
 class BuyTokens(Interactor[None, None]):

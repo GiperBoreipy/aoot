@@ -6,3 +6,6 @@ __pycache__
 migrations/versions/*
 assets/account.json
  
+test.log
+prod.log
+log.log

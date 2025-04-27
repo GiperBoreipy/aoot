@@ -2,9 +2,9 @@ from typing import override
 
 from sqlalchemy import select
 
-from domain.tokens import TokenRepository, Token
+from src.domain.tokens import TokenRepository, Token
 
-from infra.adapters.repositories.sqlalchemy.base import SQLAlchemyBaseRepository
+from .base import SQLAlchemyBaseRepository
 
 
 class SQLAlchemyTokenRepositoryImpl(SQLAlchemyBaseRepository, TokenRepository):

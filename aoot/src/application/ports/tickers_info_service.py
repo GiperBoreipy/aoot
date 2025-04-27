@@ -1,7 +1,7 @@
 from typing import Protocol
 from abc import abstractmethod
 
-from domain.tokens import Ticker
+from src.domain.tokens import Ticker
 
 
 class TickersInfoService(Protocol):

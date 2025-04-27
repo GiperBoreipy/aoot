@@ -2,7 +2,7 @@ from dishka import Provider, Scope, provide
 
 from aiohttp import ClientSession
 
-from infra.adapters.base import HttpClient
+from src.infra.adapters.base import HttpClient
 
 
 class CommonProvider(Provider):

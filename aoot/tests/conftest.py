@@ -2,8 +2,8 @@ from pytest import fixture
 
 from dishka import AsyncContainer
 
-from bootstrap.dependencies import get_test_di_container
-from bootstrap.logger import setup_logger
+from src.bootstrap.dependencies import get_test_di_container
+from src.bootstrap.logger import setup_logger
 
 
 setup_logger(is_test=True)

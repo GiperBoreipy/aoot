@@ -1,7 +1,7 @@
 from typing import Protocol
 from abc import abstractmethod
 
-from domain.tokens import Token
+from src.domain.tokens import Token
 
 
 class CryptoExchangeService(Protocol):

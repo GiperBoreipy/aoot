@@ -1,8 +1,8 @@
 import sqlalchemy as sa
 
-from infra.models.base import METADATA, MAPPER_REGISTRY
+from src.domain.tokens import Token, Ticker
 
-from domain.tokens import Token, Ticker
+from .base import METADATA, MAPPER_REGISTRY
 
 
 class TickerSQLAlchemyType(sa.TypeDecorator):

@@ -29,5 +29,4 @@ def setup_logger(*, is_test: bool = False):
         encoding="utf-8",
         handlers=(file_out, console_out),
     )
-    logging.getLogger("apscheduler").setLevel(logging.ERROR)
     logging.getLogger("asyncio").setLevel(logging.ERROR)

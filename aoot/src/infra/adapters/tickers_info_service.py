@@ -3,9 +3,9 @@ import asyncio
 
 from parsel import Selector
 
-from application.ports import TickersInfoService
+from src.application.ports import TickersInfoService
 
-from domain.tokens import Ticker
+from src.domain.tokens import Ticker
 
 from .base import HttpClient
 

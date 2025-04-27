@@ -6,8 +6,6 @@ services:
     image: aoot_server 
     container_name: aoot_server 
     restart: unless-stopped
-    volumes:
-      - ./aoot/log.log:/server/log.log
 
   postgres:
     image: postgres:16
