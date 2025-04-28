@@ -49,9 +49,9 @@ class OkxCryptoExchangeServiceImpl(CryptoExchangeService):
             "reduceOnly": False,
             "sz": str(int(acc_balance * Decimal(acc.use_balance_percent))),
             "attachAlgoOrds": {
-                "tgOrdKing": "limit",
-                "tgOrdPx": str(token_price * Decimal(1.05)),
-                "tdTriggerPxType": "last",
+                "tpOrdKing": "limit",
+                "tpOrdPx": str(token_price * Decimal(1.05)),
+                "tpTriggerPxType": "last",
             },
         }
 
