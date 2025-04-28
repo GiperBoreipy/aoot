@@ -2,14 +2,14 @@ from typing import override
 
 from sqlalchemy import select
 
-from src.domain.tokens import TokenRepository, Token
+from src.domain.tokens import TokenRepository, Token, Ticker
 
 from .base import SQLAlchemyBaseRepository
 
 
 class SQLAlchemyTokenRepositoryImpl(SQLAlchemyBaseRepository, TokenRepository):
     @override
-    async def get_by_ticker(self, ticker: str) -> Token | None:
+    async def get_by_ticker(self, ticker: Ticker) -> Token | None:
         stmt = select(Token).where(Token.ticker == ticker)  # type: ignore
 
         result = await self._session.scalar(stmt)
@@ -18,7 +18,7 @@ class SQLAlchemyTokenRepositoryImpl(SQLAlchemyBaseRepository, TokenRepository):
 
     @override
     async def get_all_not_buyed_tokens(self) -> tuple[Token, ...]:
-        stmt = select(Token).where(not Token.is_buyed)  # type: ignore
+        stmt = select(Token).where(Token._is_buyed == False)  # type: ignore
 
         results = await self._session.scalars(stmt)
 

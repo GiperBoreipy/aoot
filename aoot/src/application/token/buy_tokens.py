@@ -5,6 +5,8 @@ from src.domain.tokens import TokenRepository
 from src.application.ports import TransactionManager, CryptoExchangeService
 from src.application.base import Interactor
 
+from src.bootstrap.configs import account
+
 
 class BuyTokens(Interactor[None, None]):
     """
@@ -27,7 +29,8 @@ class BuyTokens(Interactor[None, None]):
         tokens = await self.__token_repo.get_all_not_buyed_tokens()
 
         for token in tokens:
-            buy_status = await self.__crypto_exchange_service.buy_token(token)
+            buy_status = await self.__crypto_exchange_service.buy_token(account, token)
+            print(buy_status)
             if buy_status:
                 token.mark_as_buyed()
                 await self.__transaction_manager.commit()

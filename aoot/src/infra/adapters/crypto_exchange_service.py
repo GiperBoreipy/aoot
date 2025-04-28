@@ -1,6 +1,5 @@
 from decimal import Decimal
 from typing import override, Final, Any
-from pprint import pprint
 from datetime import datetime, timezone
 import base64
 import hashlib
@@ -25,12 +24,20 @@ class OkxCryptoExchangeServiceImpl(CryptoExchangeService):
     @override
     async def buy_token(self, acc: Account, token: Token) -> bool:
         if not await self._is_token_exists(ticker=token.ticker):
+            print("не сущ")
             return False
 
         url = self.BASE_API_URL + "/api/v5/trade/order"
 
         token_price = await self._get_token_price(token.ticker)
         acc_balance = await self._get_balance(acc)
+
+        print("Цена ", token_price)
+
+        if token_price == Decimal(0):
+            return False
+
+        print("Баланс ", acc_balance)
 
         payload = {
             "instId": token.ticker.instrument_id,
@@ -57,6 +64,7 @@ class OkxCryptoExchangeServiceImpl(CryptoExchangeService):
         )
 
         response_data = await response.json()
+        print(response_data)
 
         if (
             response.status == 200
@@ -85,7 +93,7 @@ class OkxCryptoExchangeServiceImpl(CryptoExchangeService):
 
         for r in response_data["data"]:
             if r["instId"].startswith(ticker.value):
-                return Decimal(r["markPx"])
+                return Decimal(r["markPx"] or 0)
 
         return Decimal(0)
 
@@ -125,7 +133,6 @@ class OkxCryptoExchangeServiceImpl(CryptoExchangeService):
 
         for token in response_data.get("data", []):
             if token.get("instId", "") == ticker.instrument_id:
-                pprint(token)
                 return True
 
         return False
