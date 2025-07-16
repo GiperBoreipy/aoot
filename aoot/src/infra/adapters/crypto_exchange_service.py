@@ -41,18 +41,12 @@ class OkxCryptoExchangeServiceImpl(CryptoExchangeService):
 
         payload = {
             "instId": token.ticker.instrument_id,
-            "tdMode": "spot_isolated",
+            "tdMode": "cash",
             "side": "buy",
             "ordType": "market",
             "px": str(token_price),
             "reduceOnly": False,
             "sz": str(int(acc_balance * Decimal(acc.use_balance_percent))),
-            "attachAlgoOrds": {
-                "tpOrdKing": "limit",
-                "tpOrdPx": str(token_price * Decimal(1.05)),
-                "tpTriggerPxType": "last",
-                "tpTriggerPx": str(token_price * Decimal(1.05)),
-            },
         }
 
         response = await self.__http_client.post(

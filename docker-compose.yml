@@ -6,6 +6,8 @@ services:
     image: aoot_server 
     container_name: aoot_server 
     restart: unless-stopped
+    depends_on:
+      - postgres
 
   postgres:
     image: postgres:16
