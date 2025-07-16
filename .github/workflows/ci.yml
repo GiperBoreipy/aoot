@@ -20,10 +20,16 @@ jobs:
           python-version: "3.12"  
 
       - name: Install Poetry
-        run:  pip install poetry
+        run:  |
+          cd aoot
+          pip install poetry
 
       - name: Install dependencies
-        run: poetry install 
+        run: |
+          cd aoot
+          poetry install 
 
       - name: Run tests
-        run: poetry run pytest 
+        run: |
+          cd aoot
+          poetry run pytest 
