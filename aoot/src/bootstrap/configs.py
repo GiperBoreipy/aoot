@@ -29,21 +29,12 @@ class Config:
         db_port = os.getenv("DB_PORT")
         db_name = os.getenv("DB_NAME")
 
-        if (
-            db_user is None
-            or db_password is None
-            or db_host is None
-            or db_port is None
-            or db_name is None
-        ):
-            raise KeyError("Переменные окружения не найдены")
-
         return cls(
-            db_user=db_user,
-            db_password=db_password,
-            db_host=db_host,
-            db_port=db_port,
-            db_name=db_name,
+            db_user=db_user or "default_postgres_user",
+            db_password=db_password or "default_postgres_password",
+            db_host=db_host or "postgres",
+            db_port=db_port or 5432,
+            db_name=db_name or "default_postgres_db",
         )
 
 
