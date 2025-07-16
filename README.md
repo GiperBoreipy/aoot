@@ -3,6 +3,17 @@ A playground project that applies clean architecture and domain-driven design (D
 
 ---
 
+## Setup
+```bash
+git clone https://github.com/GiperBoreipy/aoot.git
+cd aoot
+
+cp env.example .env     
+make run
+```
+
+---
+
 ## Tech Stack
 | Tool | Role |
 |------|------|
